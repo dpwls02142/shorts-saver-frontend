@@ -53,7 +53,7 @@ const ShortsList = () => {
         : [...prev, tagId]
     );
   };
-  
+
   const filteredShorts = shorts.filter((short) => {
     return (
       // 검색어 필터링
@@ -123,17 +123,17 @@ const ShortsList = () => {
               <h2 className="text-xl font-bold mb-2">{short.title}</h2>
               <p className="text-gray-600 mb-4">{short.memo}</p>
               
-              <div className="mb-4 flex flex-wrap gap-2">
-                {short.tags && short.tags.map((tag) => (
-                  <span 
-                    key={tag.id} 
-                    className="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full flex items-center"
-                  >
-                    <Tag className="mr-1 w-3 h-3" /> {tag.name}
-                  </span>
-                ))}
-              </div>
-              
+             <div className="mb-4 flex flex-wrap gap-2">
+              {(Array.isArray(short.tags) ? short.tags : []).map((tag) => (
+                <span 
+                  key={tag.id} 
+                  className="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full flex items-center"
+                >
+                  <Tag className="mr-1 w-3 h-3" /> {tag.name}
+                </span>
+              ))}
+            </div>
+
               <div className="flex space-x-3">
                 <button 
                   onClick={() => navigate(`/edit/${short.id}`)}
