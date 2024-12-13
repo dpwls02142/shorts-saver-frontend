@@ -125,15 +125,20 @@ const ShortsList = () => {
               <h2 className="text-xl font-bold mb-2">{short.title}</h2>
               <p className="text-gray-600 mb-4">{short.memo}</p>
               
+              {/* 태그 출력 부분 수정 */}
               <div className="mb-4 flex flex-wrap gap-2">
-                {(Array.isArray(short.tags) ? short.tags : []).map((tag) => (
-                  <span 
-                    key={tag.id} 
-                    className="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full flex items-center"
-                  >
-                    <Tag className="mr-1 w-3 h-3" /> {tag.name}
-                  </span>
-                ))}
+                {Array.isArray(short.tags) && short.tags.length > 0 ? (
+                  short.tags.map((tag) => (
+                    <span 
+                      key={tag.id} 
+                      className="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full flex items-center"
+                    >
+                      <Tag className="mr-1 w-3 h-3" /> {tag.name}
+                    </span>
+                  ))
+                ) : (
+                  <span className="text-gray-500 text-xs">태그가 없습니다.</span>
+                )}
               </div>
 
               <div className="flex space-x-3">
