@@ -44,7 +44,7 @@ const AddShorts = ({ showNotification }) => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        '/api/shorts',
+        '/shorts',
         {
           title,
           videoUrl,

@@ -7,8 +7,6 @@ import ShortsList from './components/ShortsList.jsx';
 import AddShorts from './components/AddShorts.jsx';
 import EditShorts from './components/EditShorts.jsx';
 
-
-console.log('Base URL:', import.meta.env.VITE_API_URL);
 axios.defaults.baseURL = import.meta.env.VITE_API_URL;
 axios.defaults.withCredentials = true;
 
