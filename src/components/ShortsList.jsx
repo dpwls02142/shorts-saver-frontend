@@ -55,17 +55,19 @@ const ShortsList = () => {
   };
 
   const filteredShorts = shorts.filter((short) => {
+    // short.tags가 배열이 아니라면 문자열로 저장된 태그를 배열로 변환
+    const parsedTags = Array.isArray(short.tags) ? short.tags : JSON.parse(short.tags || "[]");
+
     return (
       // 검색어 필터링
       (searchTerm === '' || short.title.includes(searchTerm) || short.memo.includes(searchTerm)) &&
       // 태그 필터링
-      (selectedTags.length === 0 || short.tags.some(tag => selectedTags.includes(tag.id)))
+      (selectedTags.length === 0 || parsedTags.some(tag => selectedTags.includes(tag.id)))
     );
   });
-  
 
   if (loading) return <div>Loading...</div>;
-  
+
   return (
     <div>
       <div className="mb-6 flex items-center">
@@ -105,7 +107,7 @@ const ShortsList = () => {
               key={short.id} 
               className="bg-white rounded-lg shadow-md p-6 hover:shadow-xl transition"
             >
-            {embedUrl ? (
+              {embedUrl ? (
                 <div className="mb-4 aspect-video">
                     <iframe
                         src={embedUrl}
@@ -115,24 +117,24 @@ const ShortsList = () => {
                         allowFullScreen
                     />
                 </div>
-            ) : (
+              ) : (
                 <div className="mb-4 bg-gray-200 rounded-lg aspect-video flex items-center justify-center">
                     <p className="text-gray-500">쇼츠 영상으로 추가해주세요</p>
                 </div>
-            )}
+              )}
               <h2 className="text-xl font-bold mb-2">{short.title}</h2>
               <p className="text-gray-600 mb-4">{short.memo}</p>
               
-             <div className="mb-4 flex flex-wrap gap-2">
-              {(Array.isArray(short.tags) ? short.tags : []).map((tag) => (
-                <span 
-                  key={tag.id} 
-                  className="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full flex items-center"
-                >
-                  <Tag className="mr-1 w-3 h-3" /> {tag.name}
-                </span>
-              ))}
-            </div>
+              <div className="mb-4 flex flex-wrap gap-2">
+                {(Array.isArray(short.tags) ? short.tags : []).map((tag) => (
+                  <span 
+                    key={tag.id} 
+                    className="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full flex items-center"
+                  >
+                    <Tag className="mr-1 w-3 h-3" /> {tag.name}
+                  </span>
+                ))}
+              </div>
 
               <div className="flex space-x-3">
                 <button 
