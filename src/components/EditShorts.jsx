@@ -28,31 +28,31 @@ const EditShorts = ({ showNotification }) => {
       }
     };
   
-    const fetchShort = async () => {
-      try {
-        const response = await axios.get(`/shorts/${id}`);
-        const { title, video_url, memo, tags: shortTags } = response.data;
-    
-        setTitle(title);
-        setVideoUrl(video_url);
-        setMemo(memo);
-        setEmbedUrl(extractYouTubeEmbedUrl(video_url));
-    
-        // tags가 문자열일 경우 JSON 파싱, 아니면 ID 배열로 변환
-        if (typeof shortTags === 'string') {
-          const parsedTags = JSON.parse(shortTags); // 문자열인 경우 JSON 파싱
-          setSelectedTags(parsedTags.map(tag => tag.id));
-        } else if (Array.isArray(shortTags)) {
-          setSelectedTags(shortTags.map(tag => tag.id)); // 이미 배열인 경우
-        } else {
-          console.warn('Invalid tags format:', shortTags);
-          setSelectedTags([]); // 포맷이 이상할 경우 빈 배열로 설정
-        }
-      } catch (error) {
-        console.error('쇼츠 불러오기 실패:', error);
-      }
-    };
-    
+const fetchShort = async () => {
+  try {
+    const response = await axios.get(`/shorts/${id}`);
+    const { title, video_url, memo, tags: shortTags } = response.data;
+
+    setTitle(title);
+    setVideoUrl(video_url);
+    setMemo(memo);
+    setEmbedUrl(extractYouTubeEmbedUrl(video_url));
+
+    // tags가 문자열일 경우 JSON 파싱, 아니면 ID 배열로 변환
+    if (typeof shortTags === 'string') {
+      const parsedTags = JSON.parse(shortTags); // 문자열인 경우 JSON 파싱
+      setSelectedTags(parsedTags.map(tag => tag.id));
+    } else if (Array.isArray(shortTags)) {
+      setSelectedTags(shortTags.map(tag => tag.id)); // 이미 배열인 경우
+    } else {
+      console.warn('Invalid tags format:', shortTags);
+      setSelectedTags([]); // 포맷이 이상할 경우 빈 배열로 설정
+    }
+  } catch (error) {
+    console.error('쇼츠 불러오기 실패:', error);
+  }
+};
+
   
     const handleUrlChange = (url) => {
       setVideoUrl(url);
@@ -72,7 +72,7 @@ const EditShorts = ({ showNotification }) => {
         try {
           await axios.put(`/shorts/${id}`, {
             title, 
-            video_url: videoUrl,
+            videoUrl, 
             memo,
             tags: selectedTags
           });
