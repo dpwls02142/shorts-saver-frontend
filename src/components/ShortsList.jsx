@@ -99,66 +99,69 @@ const ShortsList = () => {
       </div>
 
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filteredShorts.map((short) => {
-          const embedUrl = extractYouTubeEmbedUrl(short.video_url);
-          
-          return (
-            <div 
-              key={short.id} 
-              className="bg-white rounded-lg shadow-md p-6 hover:shadow-xl transition"
-            >
-              {embedUrl ? (
-                <div className="mb-4 aspect-video">
-                    <iframe
-                        src={embedUrl}
-                        title="YouTube video player"
-                        className="w-full h-full rounded-lg"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowFullScreen
-                    />
-                </div>
-              ) : (
-                <div className="mb-4 bg-gray-200 rounded-lg aspect-video flex items-center justify-center">
-                    <p className="text-gray-500">쇼츠 영상으로 추가해주세요</p>
-                </div>
-              )}
-              <h2 className="text-xl font-bold mb-2">{short.title}</h2>
-              <p className="text-gray-600 mb-4">{short.memo}</p>
-              
-              {/* 태그 출력 부분 수정 */}
-              <div className="mb-4 flex flex-wrap gap-2">
-                {Array.isArray(short.tags) && short.tags.length > 0 ? (
-                  short.tags.map((tag) => (
-                    <span 
-                      key={tag.id} 
-                      className="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full flex items-center"
-                    >
-                      <Tag className="mr-1 w-3 h-3" /> {tag.name}
-                    </span>
-                  ))
-                ) : (
-                  <span className="text-gray-500 text-xs">태그가 없습니다.</span>
-                )}
-              </div>
+    {filteredShorts.map((short) => {
+      // short.tags가 JSON 문자열이라면 JSON.parse로 변환
+      const parsedTags = Array.isArray(short.tags) ? short.tags : JSON.parse(short.tags || "[]");
 
-              <div className="flex space-x-3">
-                <button 
-                  onClick={() => navigate(`/edit/${short.id}`)}
-                  className="flex items-center bg-blue-500 text-white px-3 py-2 rounded-md hover:bg-blue-600"
-                >
-                  <Edit className="mr-2" /> 수정
-                </button>
-                <button 
-                  onClick={() => deleteShorts(short.id)}
-                  className="flex items-center bg-red-500 text-white px-3 py-2 rounded-md hover:bg-red-600"
-                >
-                  <Trash2 className="mr-2" /> 삭제
-                </button>
-              </div>
+      const embedUrl = extractYouTubeEmbedUrl(short.video_url);
+      
+      return (
+        <div 
+          key={short.id} 
+          className="bg-white rounded-lg shadow-md p-6 hover:shadow-xl transition"
+        >
+          {embedUrl ? (
+            <div className="mb-4 aspect-video">
+                <iframe
+                    src={embedUrl}
+                    title="YouTube video player"
+                    className="w-full h-full rounded-lg"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                />
             </div>
-          );
-        })}
+          ) : (
+            <div className="mb-4 bg-gray-200 rounded-lg aspect-video flex items-center justify-center">
+                <p className="text-gray-500">쇼츠 영상으로 추가해주세요</p>
+            </div>
+          )}
+          <h2 className="text-xl font-bold mb-2">{short.title}</h2>
+          <p className="text-gray-600 mb-4">{short.memo}</p>
+          
+          {/* 태그 출력 부분 수정 */}
+          <div className="mb-4 flex flex-wrap gap-2">
+            {parsedTags.length > 0 ? (
+              parsedTags.map((tag) => (
+                <span 
+                  key={tag.id} 
+                  className="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full flex items-center"
+                >
+                  <Tag className="mr-1 w-3 h-3" /> {tag.name}
+                </span>
+              ))
+            ) : (
+              <span className="text-gray-500 text-xs">태그가 없습니다.</span>
+            )}
+        </div>
+
+        <div className="flex space-x-3">
+          <button 
+            onClick={() => navigate(`/edit/${short.id}`)}
+            className="flex items-center bg-blue-500 text-white px-3 py-2 rounded-md hover:bg-blue-600"
+          >
+            <Edit className="mr-2" /> 수정
+          </button>
+          <button 
+            onClick={() => deleteShorts(short.id)}
+            className="flex items-center bg-red-500 text-white px-3 py-2 rounded-md hover:bg-red-600"
+          >
+            <Trash2 className="mr-2" /> 삭제
+          </button>
+        </div>
       </div>
+    );
+  })}
+  </div>
     </div>
   );
 };
