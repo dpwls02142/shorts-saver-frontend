@@ -1,10 +1,16 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navigation from './components/Navigation.jsx';
 import Notification from './components/Notification.jsx';
 import ShortsList from './components/ShortsList.jsx';
 import AddShorts from './components/AddShorts.jsx';
 import EditShorts from './components/EditShorts.jsx';
+
+
+console.log('Base URL:', import.meta.env.VITE_API_URL);
+axios.defaults.baseURL = import.meta.env.VITE_API_URL;
+axios.defaults.withCredentials = true;
 
 const App = () => {
   const [notification, setNotification] = useState(null);

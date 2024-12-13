@@ -19,9 +19,7 @@ const AddShorts = ({ showNotification }) => {
 
   const fetchTags = async () => {
     try {
-      const response = await axios.get(`${process.env.REACT_APP_API_URL}/tags`, {
-        withCredentials: true, // 쿠키 전송을 위해 필요
-      });
+      const response = await axios.get('/tags');
       setTags(response.data);
     } catch (error) {
       console.error('태그 불러오기 실패:', error);
@@ -46,14 +44,13 @@ const AddShorts = ({ showNotification }) => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        `${process.env.REACT_APP_API_URL}/shorts`,
+        '/api/shorts',
         {
           title,
           videoUrl,
           memo,
           tags: selectedTags,
         },
-        { withCredentials: true } // 쿠키 포함 설정
       );
 
       showNotification('쇼츠가 성공적으로 저장되었습니다!');

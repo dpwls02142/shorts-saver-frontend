@@ -18,9 +18,7 @@ const ShortsList = () => {
 
   const fetchShorts = async () => {
     try {
-      const response = await axios.get(`${process.env.REACT_APP_API_URL}/shorts`, {
-        withCredentials: true, // 쿠키 포함 설정
-      });
+      const response = await axios.get('/shorts');
       setShorts(response.data);
     } catch (error) {
       console.error('쇼츠 불러오기 실패:', error);
@@ -29,9 +27,7 @@ const ShortsList = () => {
 
   const fetchTags = async () => {
     try {
-      const response = await axios.get(`${process.env.REACT_APP_API_URL}/tags`, {
-        withCredentials: true,
-      });
+      const response = await axios.get('/tags');
       setTags(response.data);
     } catch (error) {
       console.error('태그 불러오기 실패:', error);
@@ -40,9 +36,7 @@ const ShortsList = () => {
 
   const deleteShorts = async (id) => {
     try {
-      await axios.delete(`${process.env.REACT_APP_API_URL}/shorts/${id}`, {
-        withCredentials: true,
-      });
+      await axios.delete(`/shorts/${id}`);
       fetchShorts();
     } catch (error) {
       console.error('쇼츠 삭제 실패:', error);

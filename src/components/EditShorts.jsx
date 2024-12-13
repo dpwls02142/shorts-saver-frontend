@@ -21,9 +21,7 @@ const EditShorts = ({ showNotification }) => {
   
     const fetchTags = async () => {
       try {
-        const response = await axios.get(`${process.env.REACT_APP_API_URL}/tags`, {
-          withCredentials: true, // 쿠키 포함 설정
-        });
+        const response = await axios.get('/tags');
         setTags(response.data);
       } catch (error) {
         console.error('태그 불러오기 실패:', error);
@@ -32,9 +30,7 @@ const EditShorts = ({ showNotification }) => {
   
     const fetchShort = async () => {
       try {
-        const response = await axios.get(`${process.env.REACT_APP_API_URL}/shorts/${id}`, {
-          withCredentials: true,
-        });
+        const response = await axios.get(`/shorts/${id}`);
         const { title, video_url, memo, tags: shortTags } = response.data;
         setTitle(title);
         setVideoUrl(video_url);
@@ -62,12 +58,12 @@ const EditShorts = ({ showNotification }) => {
       const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-          await axios.put(`${process.env.REACT_APP_API_URL}/shorts/${id}`, {
+          await axios.put(`/shorts/${id}`, {
             title, 
             videoUrl, 
             memo,
             tags: selectedTags
-          }, { withCredentials: true });
+          });
           
           showNotification('쇼츠가 성공적으로 수정되었습니다!');
           
