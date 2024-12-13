@@ -9,6 +9,7 @@ const ShortsList = () => {
   const [tags, setTags] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedTags, setSelectedTags] = useState([]);
+  const [loading, setLoading] = useState(true); // Loading state
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -22,6 +23,8 @@ const ShortsList = () => {
       setShorts(response.data);
     } catch (error) {
       console.error('쇼츠 불러오기 실패:', error);
+    } finally {
+      setLoading(false); // Stop loading when fetch is complete
     }
   };
 
@@ -50,15 +53,18 @@ const ShortsList = () => {
         : [...prev, tagId]
     );
   };
+  
+  const filteredShorts = shorts.filter((short) => {
+    return (
+      // 검색어 필터링
+      (searchTerm === '' || short.title.includes(searchTerm) || short.memo.includes(searchTerm)) &&
+      // 태그 필터링
+      (selectedTags.length === 0 || short.tags.some(tag => selectedTags.includes(tag.id)))
+    );
+  });
+  
 
-  const filteredShorts = shorts.filter(
-    (short) => 
-      (searchTerm === '' || 
-       short.title.includes(searchTerm) || 
-       short.memo.includes(searchTerm)) &&
-      (selectedTags.length === 0 || 
-       (Array.isArray(short.tags) ? short.tags : []).some(tag => selectedTags.includes(tag.id)))
-  );
+  if (loading) return <div>Loading...</div>;
   
   return (
     <div>
