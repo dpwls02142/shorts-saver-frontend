@@ -69,6 +69,25 @@ const fetchShort = async () => {
     }
       const handleSubmit = async (e) => {
         e.preventDefault();
+
+        // 필드 유효성 확인
+        if (!title.trim()) {
+          showNotification('제목을 입력해주세요.', 'error');
+          return;
+        }
+        if (!videoUrl.trim()) {
+          showNotification('Youtube Shorts URL을 입력해주세요.', 'error');
+          return;
+        }
+        if (!memo.trim()) {
+          showNotification('메모를 입력해주세요.', 'error');
+          return;
+        }
+        if (selectedTags.length === 0) {
+          showNotification('최소 하나의 태그를 선택해주세요.', 'error');
+          return;
+        }
+
         try {
           await axios.put(`/shorts/${id}`, {
             title, 
